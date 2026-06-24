@@ -1,0 +1,25 @@
+// ===============================
+// CRIAR CASAIS INICIAIS (CORRER UMA VEZ)
+// ===============================
+async function criarCasaisIniciais() {
+  try {
+    await db.collection("casais").add({
+      nome: "Pedro",
+      pin: "4670",
+      createdAt: Date.now()
+    });
+
+    await db.collection("casais").add({
+      nome: "Bárbara",
+      pin: "0000",
+      createdAt: Date.now()
+    });
+
+    alert("Casais criados com sucesso!");
+  } catch (err) {
+    console.error("Erro ao criar casais:", err);
+  }
+}
+
+// ⚠️ CHAMAR UMA VEZ
+criarCasaisIniciais();
