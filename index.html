@@ -1,0 +1,1233 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<title>Pedro & Bárbara ❤️</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#ff5e7e">
+<link rel="apple-touch-icon" href="icon-192.png">
+
+<style>
+:root {
+  --primary: #ff5e7e;
+  --primary-dark: #ff3d63;
+  --bg: #f2f2f7;
+  --card-bg: #ffffff;
+  --text-dark: #222;
+  --text-light: #777;
+  --radius: 16px;
+  --shadow: 0 8px 24px rgba(0,0,0,0.12);
+  --dot-color: #ff3b30;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text-dark);
+}
+
+/* Top bar */
+header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: rgba(255,255,255,0.9);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.06);
+}
+header h1 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+}
+.menu-btn {
+  position: absolute;
+  left: 14px;
+  top: 10px;
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  border: none;
+  background: rgba(0,0,0,0.04);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  cursor: pointer;
+  z-index: 9999;
+}
+
+/* Container */
+.container {
+  padding: 16px;
+  max-width: 900px;
+  margin: 0 auto 40px auto;
+}
+
+/* Cards / sections */
+.section {
+  background: var(--card-bg);
+  padding: 18px 16px 16px 16px;
+  margin-bottom: 18px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.section-header span.icon {
+  font-size: 22px;
+}
+.section-header h2 {
+  margin: 0;
+  font-size: 18px;
+  color: var(--primary);
+}
+.section small {
+  color: var(--text-light);
+}
+
+/* Inputs / buttons */
+input, select, button {
+  width: 100%;
+  padding: 11px 12px;
+  margin-top: 8px;
+  border-radius: 12px;
+  border: 1px solid #ddd;
+  font-size: 15px;
+}
+button {
+  background: var(--primary);
+  color: white;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+button:hover {
+  background: var(--primary-dark);
+}
+button.secondary {
+  background: #e5e5ea;
+  color: #111;
+}
+.row {
+  display: flex;
+  gap: 8px;
+}
+.row > * {
+  flex: 1;
+}
+
+/* Helper text */
+.helper {
+  margin-top: 8px;
+  font-size: 13px;
+  color: var(--text-light);
+}
+
+/* Lists */
+.list-item {
+  background: #fafafa;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid #eee;
+  margin-top: 8px;
+  font-size: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.list-item span.label {
+  font-weight: 500;
+}
+.badge {
+  background: rgba(0,0,0,0.05);
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+}
+
+/* Sidebar */
+.sidebar-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.25);
+  opacity: 0;
+  pointer-events: none;
+  transition: 0.25s;
+  z-index: 40;
+}
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 260px;
+  height: 100%;
+  background: #ffffff;
+  box-shadow: 4px 0 18px rgba(0,0,0,0.18);
+  padding: 18px 14px;
+  transition: transform 0.25s ease;
+  z-index: 50;
+  transform: translateX(-100%);
+}
+.sidebar.open {
+  transform: translateX(0);
+}
+.sidebar-backdrop.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #ff5e7e, #ffb86c);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 700;
+}
+.sidebar-header div {
+  display: flex;
+  flex-direction: column;
+}
+.sidebar-header small {
+  color: var(--text-light);
+  font-size: 12px;
+}
+.sidebar-menu {
+  margin-top: 8px;
+}
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 8px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 15px;
+  margin-bottom: 4px;
+}
+.sidebar-item span.icon {
+  font-size: 20px;
+}
+.sidebar-item.active {
+  background: rgba(255,94,126,0.12);
+  color: var(--primary-dark);
+}
+
+/* Hidden sections */
+.view {
+  display: none;
+}
+.view.active {
+  display: block;
+}
+
+/* Dashboard */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+}
+.dashboard-card {
+  background: #fafafa;
+  border-radius: 14px;
+  padding: 10px 12px;
+  border: 1px solid #eee;
+}
+.dashboard-card-title {
+  font-size: 13px;
+  color: var(--text-light);
+}
+.dashboard-card-value {
+  margin-top: 4px;
+  font-size: 18px;
+  font-weight: 700;
+}
+.dashboard-card-extra {
+  margin-top: 4px;
+  font-size: 12px;
+  color: var(--text-light);
+}
+
+/* CALENDÁRIO iOS */
+.calendar-container {
+  margin-top: 10px;
+}
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+.calendar-header-title {
+  font-weight: 600;
+}
+.calendar-nav-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  border: none;
+  background: #f0f0f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.calendar-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  font-size: 11px;
+  text-align: center;
+  color: var(--text-light);
+  margin-bottom: 4px;
+}
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+.calendar-day {
+  height: 34px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  cursor: pointer;
+  position: relative;
+}
+.calendar-day.other-month {
+  color: #ccc;
+}
+.calendar-day.today {
+  border: 1px solid var(--primary);
+}
+.calendar-day.selected {
+  background: var(--primary);
+  color: white;
+}
+.calendar-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 999px;
+  background: var(--dot-color);
+  margin-top: 2px;
+}
+.calendar-events-list {
+  margin-top: 10px;
+}
+.calendar-events-list h4 {
+  margin: 0 0 4px 0;
+  font-size: 14px;
+}
+.calendar-events-list .event-item {
+  font-size: 13px;
+  padding: 6px 8px;
+  border-radius: 10px;
+  background: #fafafa;
+  border: 1px solid #eee;
+  margin-top: 4px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <button class="menu-btn" onclick="toggleSidebar(true)">☰</button>
+  <h1>Pedro & Bárbara ❤️</h1>
+</header>
+
+<div class="sidebar-backdrop" id="sidebarBackdrop" onclick="toggleSidebar(false)"></div>
+
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="avatar" id="avatarCircle">P</div>
+    <div>
+      <strong id="currentUserLabel">Pedro</strong>
+      <small>Ligado a: calend0894</small>
+    </div>
+  </div>
+
+  <div class="sidebar-menu">
+    <div class="sidebar-item" onclick="setView('perfil')" id="nav-perfil">
+      <span class="icon">👤</span><span>Perfil / Login</span>
+    </div>
+    <div class="sidebar-item" onclick="setView('dashboard')" id="nav-dashboard">
+      <span class="icon">🏠</span><span>Início</span>
+    </div>
+    <div class="sidebar-item" onclick="setView('calendario')" id="nav-calendario">
+      <span class="icon">📅</span><span>Calendário</span>
+    </div>
+    <div class="sidebar-item" onclick="setView('compras')" id="nav-compras">
+      <span class="icon">🛒</span><span>Lista de Compras</span>
+    </div>
+    <div class="sidebar-item" onclick="setView('despesas')" id="nav-despesas">
+      <span class="icon">💸</span><span>Despesas</span>
+    </div>
+    <div class="sidebar-item" onclick="setView('ferias')" id="nav-ferias">
+      <span class="icon">🌴</span><span>Férias</span>
+    </div>
+    <div class="sidebar-item" onclick="setView('horas')" id="nav-horas">
+      <span class="icon">⏱️</span><span>Registo de Horas</span>
+    </div>
+    <div class="sidebar-item" onclick="setView('conta')" id="nav-conta">
+      <span class="icon">💰</span><span>Conta conjunta</span>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <!-- PERFIL / LOGIN -->
+  <div class="view active" id="view-perfil">
+    <div class="section">
+      <div class="section-header">
+        <span class="icon">👤</span><h2>Perfil / Login</h2>
+      </div>
+      <small>Escolhe quem está a usar a app neste dispositivo.</small>
+      <div class="row" style="margin-top:10px;">
+        <button class="secondary" onclick="setUser('pedro')">Entrar como Pedro</button>
+        <button class="secondary" onclick="setUser('barbara')">Entrar como Bárbara</button>
+      </div>
+      <div class="helper" id="userInfo"></div>
+    </div>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div class="view" id="view-dashboard">
+    <div class="section">
+      <div class="section-header">
+        <span class="icon">🏠</span><h2>Início</h2>
+      </div>
+      <small>Resumo rápido da vossa vida a dois.</small>
+
+      <div class="dashboard-grid" style="margin-top:10px;">
+        <div class="dashboard-card">
+          <div class="dashboard-card-title">Despesas deste mês</div>
+          <div class="dashboard-card-value" id="dashExpensesMonth">€ 0,00</div>
+          <div class="dashboard-card-extra">Total partilhado</div>
+        </div>
+
+        <div class="dashboard-card">
+          <div class="dashboard-card-title">Horas extra este ano</div>
+          <div class="dashboard-card-value" id="dashExtraHours">0h</div>
+          <div class="dashboard-card-extra">Do utilizador atual</div>
+        </div>
+
+        <div class="dashboard-card">
+          <div class="dashboard-card-title">Próximos eventos</div>
+          <div class="dashboard-card-value" id="dashNextEvents">0</div>
+          <div class="dashboard-card-extra">Nos próximos 30 dias</div>
+        </div>
+
+        <div class="dashboard-card">
+          <div class="dashboard-card-title">Itens por comprar</div>
+          <div class="dashboard-card-value" id="dashShoppingItems">0</div>
+          <div class="dashboard-card-extra">Na lista de compras</div>
+        </div>
+
+        <div class="dashboard-card">
+          <div class="dashboard-card-title">Férias restantes</div>
+          <div class="dashboard-card-value" id="dashVacation">0 dias</div>
+          <div class="dashboard-card-extra">Utilizador atual</div>
+        </div>
+      </div>
+
+      <div style="margin-top:14px;">
+        <button onclick="setView('calendario')">Ver calendário</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CALENDÁRIO -->
+  <div class="view" id="view-calendario">
+    <div class="section">
+      <div class="section-header">
+        <span class="icon">📅</span><h2>Calendário</h2>
+      </div>
+      <small>Eventos partilhados entre os dois.</small>
+
+      <div class="calendar-container">
+        <div class="calendar-header">
+          <button class="calendar-nav-btn" onclick="changeMonth(-1)">‹</button>
+          <div class="calendar-header-title" id="calendarMonthLabel"></div>
+          <button class="calendar-nav-btn" onclick="changeMonth(1)">›</button>
+        </div>
+
+        <div class="calendar-weekdays">
+          <div>Seg</div><div>Ter</div><div>Qua</div><div>Qui</div><div>Sex</div><div>Sáb</div><div>Dom</div>
+        </div>
+
+        <div class="calendar-grid" id="calendarGrid"></div>
+      </div>
+
+      <div class="calendar-events-list">
+        <h4>Eventos no dia selecionado</h4>
+        <div id="selectedDayEvents"></div>
+
+        <h4 style="margin-top:10px;">Próximos eventos</h4>
+        <div id="upcomingEvents"></div>
+      </div>
+
+      <hr style="margin:16px 0;border:none;border-top:1px solid #eee;">
+
+      <input id="eventTitle" placeholder="Título do evento (ex: Férias Algarve)">
+      <input id="eventDate" type="date">
+      <button onclick="addCalendarEvent()">Adicionar evento</button>
+      <div class="helper">Se o título contiver "férias", será abatido 1 dia ao utilizador atual.</div>
+    </div>
+  </div>
+
+  <!-- LISTA DE COMPRAS -->
+  <div class="view" id="view-compras">
+    <div class="section">
+      <div class="section-header">
+        <span class="icon">🛒</span><h2>Lista de Compras</h2>
+      </div>
+      <small>Lista partilhada para o dia a dia.</small>
+
+      <input id="shoppingItem" placeholder="Item para comprar">
+      <button onclick="addShoppingItem()">Adicionar item</button>
+
+      <div id="shoppingList"></div>
+    </div>
+  </div>
+
+  <!-- DESPESAS -->
+  <div class="view" id="view-despesas">
+    <div class="section">
+      <div class="section-header">
+        <span class="icon">💸</span><h2>Despesas</h2>
+      </div>
+      <small>Regista despesas partilhadas.</small>
+
+      <input id="expenseName" placeholder="Descrição da despesa">
+      <input id="expenseValue" type="number" placeholder="Valor (€)">
+      <button onclick="addExpense()">Adicionar despesa</button>
+
+      <div id="expenseList"></div>
+    </div>
+  </div>
+
+  <!-- FÉRIAS -->
+  <div class="view" id="view-ferias">
+    <div class="section">
+      <div class="section-header">
+        <span class="icon">🌴</span><h2>Férias</h2>
+      </div>
+      <small>Dias de férias disponíveis por ano.</small>
+
+      <div class="row" style="margin-top:10px;">
+        <input id="vacPedro" type="number" placeholder="Férias Pedro">
+        <input id="vacBarbara" type="number" placeholder="Férias Bárbara">
+      </div>
+
+      <button onclick="saveVacationDays()">Guardar</button>
+      <div class="helper">Ao marcar eventos com "férias" no título, é abatido 1 dia ao utilizador atual.</div>
+    </div>
+  </div>
+
+  <!-- REGISTO DE HORAS -->
+  <div class="view" id="view-horas">
+    <div class="section">
+      <div class="section-header">
+        <span class="icon">⏱️</span><h2>Registo de Horas</h2>
+      </div>
+      <small>Usa como relógio de ponto diário.</small>
+
+      <div class="row" style="margin-top:10px;">
+        <button onclick="clockIn()">Entrar</button>
+        <button onclick="lunchOut()">Sair almoço</button>
+      </div>
+
+      <div class="row">
+        <button onclick="lunchIn()">Entrar almoço</button>
+        <button onclick="clockOut()">Sair</button>
+      </div>
+
+      <h4 style="margin-top:15px;">Registo manual</h4>
+
+      <div class="row">
+        <input id="manualStart" type="time" placeholder="Entrada">
+        <input id="manualLunchOut" type="time" placeholder="Saída almoço">
+      </div>
+
+      <div class="row">
+        <input id="manualLunchIn" type="time" placeholder="Entrada almoço">
+        <input id="manualEnd" type="time" placeholder="Saída">
+      </div>
+
+      <button onclick="manualEntry()">Registar manualmente</button>
+
+      <div id="timeList" style="margin-top:10px;"></div>
+    </div>
+  </div>
+
+  <!-- CONTA CONJUNTA -->
+  <div class="view" id="view-conta">
+    <div class="section">
+      <div class="section-header">
+        <span class="icon">💰</span><h2>Conta conjunta</h2>
+      </div>
+      <small>Define salários, objetivos e percentagens.</small>
+
+      <h3 style="margin-top:14px;font-size:15px;">Salários</h3>
+      <div class="row">
+        <input id="salaryPedro" type="number" placeholder="Salário Pedro (€)">
+        <input id="salaryBarbara" type="number" placeholder="Salário Bárbara (€)">
+      </div>
+
+      <h3 style="margin-top:14px;font-size:15px;">Objetivo de poupança mensal</h3>
+      <div class="row">
+        <input id="goalPedro" type="number" placeholder="Objetivo Pedro (€)">
+        <input id="goalBarbara" type="number" placeholder="Objetivo Bárbara (€)">
+      </div>
+
+      <h3 style="margin-top:14px;font-size:15px;">Contribuição para conta conjunta</h3>
+      <div class="row">
+        <input id="jointPedro" type="number" placeholder="% Pedro">
+        <input id="jointBarbara" type="number" placeholder="% Bárbara">
+      </div>
+
+      <button style="margin-top:12px;" onclick="saveJointPlan()">Guardar plano</button>
+
+      <div id="jointSummary" class="helper" style="margin-top:10px;"></div>
+    </div>
+  </div>
+
+</div> <!-- fim do container -->
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+
+<script>
+// CONFIG DO TEU FIREBASE
+const firebaseConfig = {
+  apiKey: "AIzaSyDfymDOoxl0PMj8dfDXOkmnpLCtz2DmtkE",
+  authDomain: "calend0894.firebaseapp.com",
+  projectId: "calend0894",
+  storageBucket: "calend0894.firebasestorage.app",
+  messagingSenderId: "1057848708168",
+  appId: "1:1057848708168:web:794620090a708330945c7d",
+  measurementId: "G-NJD5PBJDX8"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+const DOC_ID = "shared";
+let appData = null;
+let currentUser = "pedro";
+
+// CALENDÁRIO: estado atual
+let currentMonth = new Date().getMonth();
+let currentYear = new Date().getFullYear();
+let selectedDate = new Date();
+
+// -------- MENU / VIEWS ----------
+function toggleSidebar(open) {
+  const sb = document.getElementById("sidebar");
+  const bd = document.getElementById("sidebarBackdrop");
+  if (open) {
+    sb.classList.add("open");
+    bd.classList.add("open");
+  } else {
+    sb.classList.remove("open");
+    bd.classList.remove("open");
+  }
+}
+
+function setView(name) {
+  toggleSidebar(false);
+  document.querySelectorAll(".view").forEach(v => v.classList.remove("active"));
+  const view = document.getElementById("view-" + name);
+  if (view) view.classList.add("active");
+
+  document.querySelectorAll(".sidebar-item").forEach(i => i.classList.remove("active"));
+  const nav = document.getElementById("nav-" + name);
+  if (nav) nav.classList.add("active");
+
+  if (name === "calendario") renderCalendar();
+  if (name === "dashboard") refreshDashboard();
+}
+
+// -------- PERFIL / LOGIN ----------
+function setUser(user) {
+  currentUser = user;
+  const label = document.getElementById("currentUserLabel");
+  const avatar = document.getElementById("avatarCircle");
+  const info = document.getElementById("userInfo");
+
+  if (user === "pedro") {
+    label.textContent = "Pedro";
+    avatar.textContent = "P";
+  } else {
+    label.textContent = "Bárbara";
+    avatar.textContent = "B";
+  }
+
+  info.textContent = "Sessão atual: " + (user === "pedro" ? "Pedro" : "Bárbara");
+  setView("dashboard");
+}
+
+// -------- NORMALIZAR ESTRUTURA ----------
+function normalizeData(raw) {
+  const data = raw || {};
+  const users = data.users || {};
+  const pedro = users.pedro || {};
+  const barbara = users.barbara || {};
+
+  return {
+    calendar: data.calendar || [],
+    shopping: data.shopping || [],
+    expenses: data.expenses || [],
+    vacationDays: data.vacationDays || { pedro: 0, barbara: 0 },
+    timeTracking: data.timeTracking || { pedro: [], barbara: [] },
+    users: {
+      pedro: {
+        salary: pedro.salary || 0,
+        savingsGoal: pedro.savingsGoal || 0
+      },
+      barbara: {
+        salary: barbara.salary || 0,
+        savingsGoal: barbara.savingsGoal || 0
+      }
+    },
+    jointPlan: data.jointPlan || { pedro: 0, barbara: 0 }
+  };
+}
+
+// -------- FIRESTORE ----------
+async function loadDataFromFirebase() {
+  const docRef = db.collection("appData").doc(DOC_ID);
+  const snap = await docRef.get();
+  if (!snap.exists) {
+    const initial = normalizeData({});
+    await docRef.set(initial);
+    return initial;
+  } else {
+    const normalized = normalizeData(snap.data());
+    await docRef.set(normalized, { merge: true });
+    return normalized;
+  }
+}
+
+async function saveDataToFirebase() {
+  const docRef = db.collection("appData").doc(DOC_ID);
+  await docRef.set(appData, { merge: true });
+}
+
+function listenRealtime() {
+  const docRef = db.collection("appData").doc(DOC_ID);
+  docRef.onSnapshot((snap) => {
+    if (snap.exists) {
+      appData = normalizeData(snap.data());
+      refreshAll();
+    }
+  });
+}
+
+// -------- CALENDÁRIO (partilhado) ----------
+function addCalendarEvent() {
+  const title = document.getElementById("eventTitle").value;
+  const date = document.getElementById("eventDate").value;
+  if (!title || !date) return;
+
+  const event = { title, date, by: currentUser };
+
+  // Se for férias, abate 1 dia ao utilizador atual
+  if (title.toLowerCase().includes("férias")) {
+    if (!appData.vacationDays[currentUser]) {
+      appData.vacationDays[currentUser] = 0;
+    }
+    appData.vacationDays[currentUser] = Math.max(0, appData.vacationDays[currentUser] - 1);
+  }
+
+  appData.calendar.push(event);
+  saveDataToFirebase();
+
+  document.getElementById("eventTitle").value = "";
+  document.getElementById("eventDate").value = "";
+}
+
+function changeMonth(delta) {
+  currentMonth += delta;
+  if (currentMonth < 0) {
+    currentMonth = 11;
+    currentYear--;
+  } else if (currentMonth > 11) {
+    currentMonth = 0;
+    currentYear++;
+  }
+  renderCalendar();
+}
+
+function renderCalendar() {
+  if (!appData) return;
+  const monthLabel = document.getElementById("calendarMonthLabel");
+  const grid = document.getElementById("calendarGrid");
+  const selectedEventsDiv = document.getElementById("selectedDayEvents");
+  const upcomingDiv = document.getElementById("upcomingEvents");
+
+  const monthNames = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
+  monthLabel.textContent = monthNames[currentMonth] + " " + currentYear;
+
+  grid.innerHTML = "";
+
+  const firstDay = new Date(currentYear, currentMonth, 1);
+  const startWeekDay = (firstDay.getDay() + 6) % 7;
+  const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+  const daysInPrevMonth = new Date(currentYear, currentMonth, 0).getDate();
+
+  const eventsByDate = {};
+  appData.calendar.forEach(ev => {
+    if (!ev.date) return;
+    if (!eventsByDate[ev.date]) eventsByDate[ev.date] = [];
+    eventsByDate[ev.date].push(ev);
+  });
+
+  const today = new Date();
+  const todayStr = today.toISOString().split("T")[0];
+  const selectedStr = selectedDate.toISOString().split("T")[0];
+
+  // Dias do mês anterior
+  for (let i = 0; i < startWeekDay; i++) {
+    const dayNum = daysInPrevMonth - startWeekDay + 1 + i;
+    const cell = document.createElement("div");
+    cell.className = "calendar-day other-month";
+    cell.textContent = dayNum;
+    grid.appendChild(cell);
+  }
+
+  // Dias do mês atual
+  for (let d = 1; d <= daysInMonth; d++) {
+    const cellDate = new Date(currentYear, currentMonth, d);
+    const dateStr = cellDate.toISOString().split("T")[0];
+    const cell = document.createElement("div");
+    cell.className = "calendar-day";
+    if (dateStr === todayStr) cell.classList.add("today");
+    if (dateStr === selectedStr) cell.classList.add("selected");
+
+    const numSpan = document.createElement("div");
+    numSpan.textContent = d;
+    cell.appendChild(numSpan);
+
+    if (eventsByDate[dateStr]) {
+      const dot = document.createElement("div");
+      dot.className = "calendar-dot";
+      cell.appendChild(dot);
+    }
+
+    cell.onclick = () => {
+      selectedDate = cellDate;
+      renderCalendar();
+    };
+
+    grid.appendChild(cell);
+  }
+
+  // Completar grelha
+  const totalCells = startWeekDay + daysInMonth;
+  const remaining = (7 - (totalCells % 7)) % 7;
+  for (let i = 1; i <= remaining; i++) {
+    const cell = document.createElement("div");
+    cell.className = "calendar-day other-month";
+    cell.textContent = i;
+    grid.appendChild(cell);
+  }
+
+  // Eventos do dia selecionado
+  selectedEventsDiv.innerHTML = "";
+  const selStr = selectedDate.toISOString().split("T")[0];
+  const selEvents = eventsByDate[selStr] || [];
+  if (selEvents.length === 0) {
+    selectedEventsDiv.innerHTML = "<div class='helper'>Sem eventos neste dia.</div>";
+  } else {
+    selEvents
+      .slice()
+      .sort((a,b) => a.title.localeCompare(b.title))
+      .forEach(ev => {
+        const who = ev.by === "barbara" ? "Bárbara" : "Pedro";
+        const div = document.createElement("div");
+        div.className = "event-item";
+        div.textContent = ev.title + " (" + who + ")";
+        selectedEventsDiv.appendChild(div);
+      });
+  }
+
+  // Próximos eventos (30 dias)
+  upcomingDiv.innerHTML = "";
+  const now = new Date();
+  const limit = new Date();
+  limit.setDate(limit.getDate() + 30);
+  const upcoming = appData.calendar.filter(ev => {
+    if (!ev.date) return false;
+    const d = new Date(ev.date + "T00:00:00");
+    return d >= now && d <= limit;
+  }).sort((a,b) => a.date.localeCompare(b.date));
+
+  if (upcoming.length === 0) {
+    upcomingDiv.innerHTML = "<div class='helper'>Sem eventos nos próximos 30 dias.</div>";
+  } else {
+    upcoming.forEach(ev => {
+      const who = ev.by === "barbara" ? "Bárbara" : "Pedro";
+      const div = document.createElement("div");
+      div.className = "event-item";
+      div.textContent = ev.date + " — " + ev.title + " (" + who + ")";
+      upcomingDiv.appendChild(div);
+    });
+  }
+}
+
+// -------- COMPRAS ----------
+function addShoppingItem() {
+  const item = document.getElementById("shoppingItem").value;
+  if (!item) return;
+
+  appData.shopping.push({ item, by: currentUser });
+  saveDataToFirebase();
+
+  document.getElementById("shoppingItem").value = "";
+}
+
+// -------- DESPESAS ----------
+function getToday() {
+  return new Date().toISOString().split("T")[0];
+}
+
+function addExpense() {
+  const name = document.getElementById("expenseName").value;
+  const value = parseFloat(document.getElementById("expenseValue").value);
+  if (!name || !value) return;
+
+  appData.expenses.push({ name, value, by: currentUser, date: getToday() });
+  saveDataToFirebase();
+
+  document.getElementById("expenseName").value = "";
+  document.getElementById("expenseValue").value = "";
+}
+
+// -------- FÉRIAS ----------
+function saveVacationDays() {
+  const p = parseInt(document.getElementById("vacPedro").value) || 0;
+  const b = parseInt(document.getElementById("vacBarbara").value) || 0;
+
+  appData.vacationDays = { pedro: p, barbara: b };
+  saveDataToFirebase();
+}
+
+// -------- HORAS (ponto) ----------
+function getTime() {
+  const d = new Date();
+  return d.toTimeString().slice(0,5);
+}
+
+function ensureTodayEntry() {
+  const today = getToday();
+  if (!appData.timeTracking[currentUser]) {
+    appData.timeTracking[currentUser] = [];
+  }
+  let entry = appData.timeTracking[currentUser].find(e => e.date === today);
+  if (!entry) {
+    entry = { date: today };
+    appData.timeTracking[currentUser].push(entry);
+  }
+  return entry;
+}
+
+function clockIn() {
+  const e = ensureTodayEntry();
+  e.start = getTime();
+  saveDataToFirebase();
+}
+
+function lunchOut() {
+  const e = ensureTodayEntry();
+  e.lunchOut = getTime();
+  saveDataToFirebase();
+}
+
+function lunchIn() {
+  const e = ensureTodayEntry();
+  e.lunchIn = getTime();
+  saveDataToFirebase();
+}
+
+function clockOut() {
+  const e = ensureTodayEntry();
+  e.end = getTime();
+
+  calcHours(e);
+  saveDataToFirebase();
+}
+
+function calcHours(e) {
+  const toMinutes = t => {
+    const [h,m] = t.split(":").map(Number);
+    return h*60 + m;
+  };
+
+  let total = 0;
+  if (e.start && e.end) {
+    total = toMinutes(e.end) - toMinutes(e.start);
+  }
+  if (e.lunchOut && e.lunchIn) {
+    total -= (toMinutes(e.lunchIn) - toMinutes(e.lunchOut));
+  }
+
+  const hours = (total / 60).toFixed(2);
+  e.totalHours = hours;
+  e.extra = Math.max(0, hours - 8).toFixed(2);
+}
+
+// Registo manual de horas
+function manualEntry() {
+  const start = document.getElementById("manualStart").value;
+  const lunchOut = document.getElementById("manualLunchOut").value;
+  const lunchIn = document.getElementById("manualLunchIn").value;
+  const end = document.getElementById("manualEnd").value;
+
+  if (!start || !end) return;
+
+  const entry = {
+    date: getToday(),
+    start,
+    lunchOut,
+    lunchIn,
+    end
+  };
+
+  calcHours(entry);
+
+  if (!appData.timeTracking[currentUser]) {
+    appData.timeTracking[currentUser] = [];
+  }
+
+  const idx = appData.timeTracking[currentUser].findIndex(e => e.date === entry.date);
+  if (idx >= 0) {
+    appData.timeTracking[currentUser][idx] = entry;
+  } else {
+    appData.timeTracking[currentUser].push(entry);
+  }
+
+  saveDataToFirebase();
+
+  document.getElementById("manualStart").value = "";
+  document.getElementById("manualLunchOut").value = "";
+  document.getElementById("manualLunchIn").value = "";
+  document.getElementById("manualEnd").value = "";
+}
+
+// -------- CONTA CONJUNTA ----------
+function saveJointPlan() {
+  const sP = parseFloat(document.getElementById("salaryPedro").value) || 0;
+  const sB = parseFloat(document.getElementById("salaryBarbara").value) || 0;
+  const gP = parseFloat(document.getElementById("goalPedro").value) || 0;
+  const gB = parseFloat(document.getElementById("goalBarbara").value) || 0;
+  const jP = parseFloat(document.getElementById("jointPedro").value) || 0;
+  const jB = parseFloat(document.getElementById("jointBarbara").value) || 0;
+
+  appData.users.pedro.salary = sP;
+  appData.users.barbara.salary = sB;
+  appData.users.pedro.savingsGoal = gP;
+  appData.users.barbara.savingsGoal = gB;
+  appData.jointPlan.pedro = jP;
+  appData.jointPlan.barbara = jB;
+
+  saveDataToFirebase();
+}
+
+// -------- DASHBOARD ----------
+function refreshDashboard() {
+  if (!appData) return;
+
+  const now = new Date();
+  const ym = now.toISOString().slice(0,7);
+
+  // Despesas do mês
+  let monthTotal = 0;
+  appData.expenses.forEach(ex => {
+    if (!ex.date) return;
+    if (ex.date.startsWith(ym)) monthTotal += ex.value || 0;
+  });
+  document.getElementById("dashExpensesMonth").textContent =
+    "€ " + monthTotal.toFixed(2).replace(".", ",");
+
+  // Horas extra INDIVIDUAIS
+  const year = now.getFullYear();
+  let extraTotal = 0;
+  const entries = (appData.timeTracking && appData.timeTracking[currentUser]) || [];
+  entries.forEach(e => {
+    if (!e.date || !e.extra) return;
+    if (e.date.startsWith(year.toString())) {
+      extraTotal += parseFloat(e.extra || 0);
+    }
+  });
+  document.getElementById("dashExtraHours").textContent =
+    extraTotal.toFixed(1) + "h";
+
+  // Próximos eventos
+  const limit = new Date();
+  limit.setDate(limit.getDate() + 30);
+  const upcoming = appData.calendar.filter(ev => {
+    if (!ev.date) return false;
+    const d = new Date(ev.date + "T00:00:00");
+    return d >= now && d <= limit;
+  });
+  document.getElementById("dashNextEvents").textContent = upcoming.length;
+
+  // Itens por comprar
+  document.getElementById("dashShoppingItems").textContent =
+    (appData.shopping || []).length;
+
+  // Férias restantes do utilizador atual
+  const vac = appData.vacationDays || { pedro:0, barbara:0 };
+  const remaining = currentUser === "pedro" ? (vac.pedro || 0) : (vac.barbara || 0);
+  document.getElementById("dashVacation").textContent = remaining + " dias";
+}
+
+// -------- REFRESH UI ----------
+function refreshAll() {
+  refreshUserInfo();
+  refreshCalendar();
+  refreshShopping();
+  refreshExpenses();
+  refreshVacation();
+  refreshTimeTracking();
+  refreshJointPlan();
+  refreshDashboard();
+}
+
+function refreshUserInfo() {
+  const vac = appData.vacationDays || { pedro:0, barbara:0 };
+  document.getElementById("vacPedro").value = vac.pedro || 0;
+  document.getElementById("vacBarbara").value = vac.barbara || 0;
+}
+
+function refreshCalendar() {
+  renderCalendar();
+}
+
+function refreshShopping() {
+  const div = document.getElementById("shoppingList");
+  div.innerHTML = "";
+  appData.shopping.forEach(it => {
+    const who = it.by === "barbara" ? "Bárbara" : "Pedro";
+    div.innerHTML += `<div class="list-item">
+      <span>🛍️ ${it.item}</span>
+      <span class="badge">${who}</span>
+    </div>`;
+  });
+}
+
+function refreshExpenses() {
+  const div = document.getElementById("expenseList");
+  div.innerHTML = "";
+  appData.expenses.forEach(ex => {
+    const who = ex.by === "barbara" ? "Bárbara" : "Pedro";
+    div.innerHTML += `<div class="list-item">
+      <span>${ex.date || ""} — ${ex.name}: €${(ex.value || 0).toFixed(2)}</span>
+      <span class="badge">${who}</span>
+    </div>`;
+  });
+}
+
+function refreshVacation() {
+  const vac = appData.vacationDays || { pedro:0, barbara:0 };
+  document.getElementById("vacPedro").value = vac.pedro || 0;
+  document.getElementById("vacBarbara").value = vac.barbara || 0;
+}
+
+function refreshTimeTracking() {
+  const div = document.getElementById("timeList");
+  div.innerHTML = "";
+
+  const entries = (appData.timeTracking && appData.timeTracking[currentUser]) || [];
+  let totalExtra = 0;
+
+  entries
+    .slice()
+    .sort((a,b) => (a.date || "").localeCompare(b.date || ""))
+    .forEach(e => {
+      totalExtra += parseFloat(e.extra || 0);
+
+      div.innerHTML += `
+        <div class="list-item">
+          <span>${e.date} — ${e.totalHours || 0}h (extra: ${e.extra || 0}h)</span>
+        </div>
+      `;
+    });
+
+  if (entries.length > 0) {
+    div.innerHTML += `
+      <div class="list-item" style="margin-top:12px;background:#ffeef2;">
+        <strong>Total anual de horas extra: ${totalExtra.toFixed(2)}h</strong>
+      </div>
+    `;
+  }
+}
+
+function refreshJointPlan() {
+  const u = appData.users || { pedro:{}, barbara:{} };
+  const jp = appData.jointPlan || { pedro:0, barbara:0 };
+
+  document.getElementById("salaryPedro").value = u.pedro.salary || "";
+  document.getElementById("salaryBarbara").value = u.barbara.salary || "";
+  document.getElementById("goalPedro").value = u.pedro.savingsGoal || "";
+  document.getElementById("goalBarbara").value = u.barbara.savingsGoal || "";
+  document.getElementById("jointPedro").value = jp.pedro || "";
+  document.getElementById("jointBarbara").value = jp.barbara || "";
+
+  const totalSalary = (u.pedro.salary || 0) + (u.barbara.salary || 0);
+  const summary = document.getElementById("jointSummary");
+  summary.textContent =
+    "Salário total: €" + totalSalary.toFixed(2) +
+    ". Contribuição: Pedro " + (jp.pedro || 0) + "%, Bárbara " + (jp.barbara || 0) + "%.";
+}
+
+async function init() {
+  setUser("pedro");
+  setView("perfil");
+  appData = await loadDataFromFirebase();
+  refreshAll();
+  listenRealtime();
+}
+
+init();
+
+// REGISTO DO SERVICE WORKER
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./service-worker.js")
+      .catch(err => console.log("SW erro:", err));
+  });
+}
+</script>
+
+</body>
+</html>
