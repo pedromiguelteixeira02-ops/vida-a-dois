@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#5a8dee">
+
+<script>
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("service-worker.js");
+  }
+</script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vida a Dois</title>
+  <link rel="manifest" href="manifest.json">
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+    }
+
+    .app {
+      display: flex;
+      height: 100vh;
+    }
+
+    .sidebar {
+      width: 200px;
+      background: #e9e9e9;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .sidebar button {
+      padding: 10px;
+      border: none;
+      background: #5a8dee;
+      color: white;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .content {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    .view {
+      display: none;
+    }
+
+    .view.active {
+      display: block;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <button onclick="showView('dashboard')">Dashboard</button>
+      <button onclick="showView('calendario')">Calendário</button>
+      <button onclick="showView('horas')">Horas</button>
+      <button onclick="showView('perfil')">Perfil</button>
+    </aside>
+
+    <main class="content">
+      <section id="dashboard" class="view active">
+        <h2>Dashboard</h2>
+        <p>Bem-vindo, <span id="usernameDisplay"></span>!</p>
+      </section>
+
+<!-- ===================== VIEW: CALENDÁRIO ===================== -->
+<section id="calendario" class="view">
+
+  <style>
+    /* ============================
+       CALENDÁRIO — ESTILOS
+    ============================ */
+
+    #calendario {
+      padding-bottom: 40px;
+    }
+
+    #calendarGrid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 6px;
+      margin-bottom: 20px;
+    }
+
+    .calendar-day {
+      padding: 10px;
+      background: #ffffff;
+      border-radius: 8px;
+      text-align: center;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .calendar-day.other-month {
+      background: #dddddd;
+      opacity: 0.6;
+    }
+
+    .calendar-day.today {
+      border: 2px solid #5a8dee;
+    }
+
+    #eventList {
+      margin-top: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .list-item {
+      padding: 8px;
+      background: #ffffff;
+      border-radius: 6px;
+    }
+  </style>
+
+  <h2>Calendário</h2>
+
+  <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+    <button onclick="prevMonth()">◀</button>
+    <h3 id="calendarTitle">Mês</h3>
+    <button onclick="nextMonth()">▶</button>
+  </div>
+
+  <div id="calendarGrid"></div>
+
+  <h3>Eventos do dia</h3>
+  <div id="eventList"></div>
+
+  <input id="eventText" placeholder="Novo evento">
+  <button onclick="addEvent()">Adicionar evento</button>
+
+</section>
+<!-- ===================== VIEW: HORAS ===================== -->
+<section id="horas" class="view">
+
+  <style>
+    /* ============================
+       HORAS — ESTILOS
+    ============================ */
+
+    #horas {
+      padding-bottom: 40px;
+    }
+
+    .horas-box {
+      background: #ffffff;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+
+    .horas-box h3 {
+      margin-top: 0;
+    }
+
+    .horas-buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .horas-buttons button {
+      padding: 10px;
+      border: none;
+      background: #5a8dee;
+      color: white;
+      border-radius: 6px;
+      cursor: pointer;
+      flex: 1;
+    }
+
+    .manual-inputs {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .manual-inputs input {
+      flex: 1;
+      padding: 8px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    #horasLista {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .hora-item {
+      padding: 8px;
+      background: #ffffff;
+      border-radius: 6px;
+    }
+  </style>
+
+  <h2>Horas Trabalhadas</h2>
+
+  <!-- AUTOMÁTICO -->
+  <div class="horas-box">
+    <h3>Registo Automático</h3>
+    <p id="estadoHoras">Ainda não registado.</p>
+
+    <div class="horas-buttons">
+      <button onclick="clockIn()">Entrar</button>
+      <button onclick="clockOut()">Sair</button>
+    </div>
+  </div>
+
+  <!-- MANUAL -->
+  <div class="horas-box">
+    <h3>Registo Manual</h3>
+
+    <div class="manual-inputs">
+      <input type="time" id="manualStart">
+      <input type="time" id="manualEnd">
+    </div>
+
+    <div class="horas-buttons">
+      <button onclick="manualEntry()">Registar</button>
+    </div>
+  </div>
+
+  <!-- LISTA -->
+  <h3>Histórico</h3>
+  <div id="horasLista"></div>
+
+</section>
+
+<!-- ===================== VIEW: LOGIN ===================== -->
+<section id="login" class="view active">
+
+  <style>
+    /* ============================
+       LOGIN — ESTILOS
+    ============================ */
+
+    #login {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      max-width: 300px;
+      margin: 40px auto;
+      background: #ffffff;
+      padding: 20px;
+      border-radius: 10px;
+    }
+
+    #login input {
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    #login button {
+      padding: 10px;
+      border: none;
+      background: #5a8dee;
+      color: white;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+  </style>
+
+  <h2>Entrar</h2>
+
+  <input id="loginUser" placeholder="Nome (Pedro ou Bárbara)">
+  <button onclick="login()">Entrar</button>
+
+</section>
+<!-- ===================== VIEW: DASHBOARD ===================== -->
+<section id="dashboard" class="view">
+
+  <style>
+    /* ============================
+       DASHBOARD — ESTILOS
+    ============================ */
+
+    #dashboard {
+      padding-bottom: 40px;
+    }
+
+    .dash-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .dash-card {
+      background: #ffffff;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .dash-card h3 {
+      margin-top: 0;
+      margin-bottom: 10px;
+    }
+
+    .dash-number {
+      font-size: 28px;
+      font-weight: bold;
+      color: #5a8dee;
+    }
+  </style>
+
+  <h2>Dashboard</h2>
+  <p>Bem-vindo, <span id="usernameDisplay"></span>!</p>
+
+  <div class="dash-grid">
+
+    <div class="dash-card">
+      <h3>Horas Hoje</h3>
+      <div id="dashHorasHoje" class="dash-number">0h</div>
+    </div>
+
+    <div class="dash-card">
+      <h3>Total de Horas</h3>
+      <div id="dashHorasTotal" class="dash-number">0h</div>
+    </div>
+
+    <div class="dash-card">
+      <h3>Eventos Hoje</h3>
+      <div id="dashEventosHoje" class="dash-number">0</div>
+    </div>
+
+    <div class="dash-card">
+      <h3>Mês Atual</h3>
+      <div id="dashMesAtual" class="dash-number">—</div>
+    </div>
+
+  </div>
+
+</section>
+
+<!-- ===================== VIEW: PERFIL ===================== -->
+<section id="perfil" class="view">
+
+  <style>
+    /* ============================
+       PERFIL — ESTILOS
+    ============================ */
+
+    #perfil {
+      padding-bottom: 40px;
+      max-width: 400px;
+    }
+
+    .perfil-box {
+      background: #ffffff;
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .perfil-box h3 {
+      margin-top: 0;
+    }
+
+    .perfil-input {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .perfil-input input {
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    .perfil-input button {
+      padding: 10px;
+      border: none;
+      background: #5a8dee;
+      color: white;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .perfil-foto {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: #ddd;
+      margin: 0 auto 15px auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      color: #666;
+      overflow: hidden;
+    }
+
+    .perfil-foto img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  </style>
+
+  <h2>Perfil</h2>
+
+  <div class="perfil-box">
+    <div class="perfil-foto" id="perfilFotoPreview">
+      Sem foto
+    </div>
+
+    <div class="perfil-input">
+      <input type="file" id="perfilFoto" accept="image/*">
+      <button onclick="guardarFoto()">Guardar Foto</button>
+    </div>
+  </div>
+
+  <div class="perfil-box">
+    <h3>Nome</h3>
+
+    <div class="perfil-input">
+      <input id="perfilNome" placeholder="Novo nome">
+      <button onclick="guardarNome()">Guardar Nome</button>
+    </div>
+  </div>
+
+  <div class="perfil-box">
+    <h3>Tema da App</h3>
+
+    <div class="perfil-input">
+      <button onclick="mudarTema('light')">Tema Claro</button>
+      <button onclick="mudarTema('dark')">Tema Escuro</button>
+    </div>
+  </div>
+
+</section>
+
