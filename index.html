@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <title>Pedro & Bárbara ❤️</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#ff5e7e">
+  <link rel="apple-touch-icon" href="icon-192.png">
+
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<header>
+  <button class="menu-btn" onclick="toggleSidebar(true)">☰</button>
+  <h1>Pedro & Bárbara ❤️</h1>
+</header>
+
+<div class="sidebar-backdrop" id="sidebarBackdrop" onclick="toggleSidebar(false)"></div>
+
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="avatar" id="avatarCircle">P</div>
+    <div>
+      <strong id="currentUserLabel">Pedro</strong>
+      <small>Ligado a: calend0894</small>
+    </div>
+  </div>
+
+  <div class="sidebar-menu">
+    <div class="sidebar-item" onclick="setView('perfil')" id="nav-perfil">
+      <span class="icon">👤</span><span>Perfil / Login</span>
+    </div>
+    <div class="sidebar-item" onclick="setView('dashboard')" id="nav-dashboard">
+      <span class="icon">🏠</span><span>Início</span>
+    </div>
+    <div class="sidebar-item" onclick="setView('calendario')" id="nav-calendario">
+      <span class="icon">📅</span><span>Calendário</span>
+    </div>
+    <div class="sidebar-item" onclick="setView('compras')" id="nav-compras">
+      <span class="icon">🛒</span><span>Lista de Compras</span>
+    </div>
+    <div class="sidebar-item" onclick="setView('despesas')" id="nav-despesas">
+      <span class="icon">💸</span><span>Despesas</span>
+    </div>
+    <div class="sidebar-item" onclick="setView('ferias')" id="nav-ferias">
+      <span class="icon">🌴</span><span>Férias</span>
+    </div>
+    <div class="sidebar-item" onclick="setView('horas')" id="nav-horas">
+      <span class="icon">⏱️</span><span>Registo de Horas</span>
+    </div>
+    <div class="sidebar-item" onclick="setView('conta')" id="nav-conta">
+      <span class="icon">💰</span><span>Conta conjunta</span>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- PERFIL -->
+  <div class="view active" id="view-perfil">
+    <div class="section">
+      <div class="section-header">
+        <span class="icon">👤</span><h2>Perfil / Login</h2>
+      </div>
+      <small>Escolhe quem está a usar a app neste dispositivo.</small>
+
+      <div class="row" style="margin-top:10px;">
+        <button class="secondary" onclick="setUser('pedro')">Entrar como Pedro</button>
+        <button class="secondary" onclick="setUser('barbara')">Entrar como Bárbara</button>
+      </div>
+
+      <div class="helper" id="userInfo"></div>
+    </div>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div class="view" id="view-dashboard">
+    <div class="section">
+      <div class="section-header">
+        <span class="icon">🏠</span><h2>Início</h2>
+      </div>
+      <small>Resumo rápido da vossa vida a dois.</small>
+
+      <div class="dashboard-grid" style="margin-top:10px;">
+
+        <div class="dashboard-card">
+          <div class="dashboard-card-title">Férias disponíveis</div>
+          <div class="dashboard-card-value" id="dashVacPedro">Pedro: 0 dias</div>
+          <div class="dashboard-card-value" id="dashVacBarbara">Bárbara: 0 dias</div>
+        </div>
+
+        <div class="dashboard-card">
+          <div class="dashboard-card-title">Horas extra este ano</div>
+          <div class="dashboard-card-value" id="dashExtraPedro">Pedro: 0h</div>
+          <div class="dashboard-card-value" id="dashExtraBarbara">Bárbara: 0h</div>
+        </div>
+
+        <div class="dashboard-card">
+          <div class="dashboard-card-title">Despesas deste mês</div>
+          <div class="dashboard-card-value" id="dashExpPedro">Pedro: €0,00</div>
+          <div class="dashboard-card-value" id="dashExpBarbara">Bárbara: €0,00</div>
+        </div>
+
+        <div class="dashboard-card" onclick="setView('compras')" style="cursor:pointer;">
+          <div class="dashboard-card-title">Itens por comprar</div>
+          <div class="dashboard-card-value" id="dashShoppingItems">0</div>
+          <div class="dashboard-card-extra">Toque para abrir a lista</div>
+        </div>
+
+        <div class="dashboard-card">
+          <div class="dashboard-card-title">Eventos esta semana</div>
+          <div class="dashboard-card-value" id="dashWeekEvents">0</div>
+          <div class="dashboard-card-extra">Calendário partilhado</div>
+        </div>
+
+      </div>
+
+      <div style="margin-top:14px;">
+        <button onclick="setView('calendario')">Ver calendário</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CALENDÁRIO -->
+  <div class="view" id="view-calendario">
+    <div class="section">
+      <div class="section-header">
+        <span class="icon">📅</span><h2>Calendário</h2>
+      </div>
+      <small>Eventos partilhados entre os dois.</small>
+
+      <div class="calendar-container">
+        <div class="calendar-header">
+          <button class="calendar-nav-btn" onclick="changeMonth(-1)">‹</button>
+          <div class="calendar-header-title" id="calendarMonthLabel"></div>
+          <button class="calendar-nav-btn" onclick="changeMonth(1)">›</button>
+        </div>
+
+        <div class="calendar-weekdays">
+          <div>Seg</div><div>Ter</div><div>Qua</div><div>Qui</div><div>Sex</div><div>Sáb</div><div>Dom</div>
+        </div>
+
+        <div class="calendar-grid" id="calendarGrid"></div>
+      </div>
+
+      <div class="calendar-events-list">
+        <h4>Eventos no dia selecionado</h4>
+        <div id="selectedDayEvents"></div>
+
+        <h4 style="margin-top:10px;">Próximos eventos</h4>
+        <div id="upcomingEvents"></div>
+      </div>
+
+      <hr style="margin:16px 0;border:none;border-top:1px solid #eee;">
+
+      <select id="eventType">
+        <option value="evento">Evento</option>
+        <option value="aniversario">Aniversário</option>
+        <option value="ferias">Férias</option>
+      </select>
+
+      <input id="eventDate" type="date">
+      <input id="eventNotes" placeholder="Observações / descrição do evento">
+
+      <button onclick="addCalendarEvent()">Adicionar evento</button>
+
+      <div class="helper">Tipo "Férias" abate automaticamente dias ao utilizador atual.</div>
+    </div>
+  </div>
+
+  <!-- LISTA DE COMPRAS -->
+  <div class="view" id="view-compras">
+    <div class="section">
+      <div class="section-header">
+        <span class="icon">🛒</span><h2>Lista de Compras</h2>
+      </div>
+      <small>Lista partilhada para o dia a dia.</small>
+
+      <input id="shoppingItem" placeholder="Item para comprar">
+      <button onclick="addShoppingItem()">Adicionar item</button>
+
+      <div id="shoppingList"></div>
+    </div>
+  </div>
+
+  <!-- DESPESAS -->
+  <div class="view" id="view-despesas">
+    <div class="section">
+      <div class="section-header">
+        <span class="icon">💸</span><h2>Despesas</h2>
+      </div>
+      <small>Despesas individuais por utilizador.</small>
+
+      <select id="expensePreset">
+        <option value="">Escolher despesa pré-definida</option>
+        <option>Supermercado</option>
+        <option>Renda</option>
+        <option>Luz</option>
+        <option>Água</option>
+        <option>Internet</option>
+        <option>Gasolina</option>
+        <option>Veterinário</option>
+        <option>Netflix</option>
+        <option>Spotify</option>
+        <option value="outros">Outros…</option>
+      </select>
+
+      <input id="expenseName" placeholder="Descrição da despesa (opcional)">
+      <input id="expenseValue" type="number" placeholder="Valor (€)">
+      <button onclick="addExpense()">Adicionar despesa</button>
+
+      <div class="helper">As despesas são guardadas individualmente (Pedro ou Bárbara).</div>
+
+      <div id="expenseList"></div>
+    </div>
+  </div>
+
+  <!-- FÉRIAS -->
+  <div class="view" id="view-ferias">
+    <div class="section">
+      <div class="section-header">
+        <span class="icon">🌴</span><h2>Férias</h2>
+      </div>
+      <small>Gestão de férias anuais e restantes.</small>
+
+      <h3>Dias anuais</h3>
+      <div class="row">
+        <input id="vacTotalPedro" type="number" placeholder="Férias anuais Pedro">
+        <input id="vacTotalBarbara" type="number" placeholder="Férias anuais Bárbara">
+      </div>
+
+      <button onclick="saveVacationTotals()">Guardar</button>
+
+      <h3 style="margin-top:14px;">Férias restantes</h3>
+      <div class="row">
+        <input id="vacLeftPedro" disabled>
+        <input id="vacLeftBarbara" disabled>
+      </div>
+    </div>
+  </div>
+
+  <!-- HORAS -->
+  <div class="view" id="view-horas">
+    <div class="section">
+      <div class="section-header">
+        <span class="icon">⏱️</span><h2>Registo de Horas</h2>
+      </div>
+      <small>Relógio de ponto diário (individual).</small>
+
+      <div class="row" style="margin-top:10px;">
+        <button onclick="clockIn()">Entrar</button>
+        <button onclick="lunchOut()">Sair almoço</button>
+      </div>
+
+      <div class="row">
+        <button onclick="lunchIn()">Entrar almoço</button>
+        <button onclick="clockOut()">Sair</button>
+      </div>
+
+      <h4 style="margin-top:15px;">Registo manual</h4>
+
+      <div class="row">
+        <input id="manualStart" type="time" placeholder="Entrada">
+        <input id="manualLunchOut" type="time" placeholder="Saída almoço">
+      </div>
+
+      <div class="row">
+        <input id="manualLunchIn" type="time" placeholder="Entrada almoço">
+        <input id="manualEnd" type="time" placeholder="Saída">
+      </div>
+
+      <button onclick="manualEntry()">Registar manualmente</button>
+
+      <div id="timeList" style="margin-top:10px;"></div>
+    </div>
+  </div>
+
+  <!-- CONTA CONJUNTA -->
+  <div class="view" id="view-conta">
+    <div class="section">
+      <div class="section-header">
+        <span class="icon">💰</span><h2>Conta conjunta</h2>
+      </div>
+      <small>Define salários, objetivos e percentagens.</small>
+
+      <h3 style="margin-top:14px;">Salários</h3>
+      <div class="row">
+        <input id="salaryPedro" type="number" placeholder="Salário Pedro (€)">
+        <input id="salaryBarbara" type="number" placeholder="Salário Bárbara (€)">
+      </div>
+
+      <h3 style="margin-top:14px;">Objetivo de poupança mensal</h3>
+      <div class="row">
+        <input id="goalPedro" type="number" placeholder="Objetivo Pedro (€)">
+        <input id="goalBarbara" type="number" placeholder="Objetivo Bárbara (€)">
+      </div>
+
+      <h3 style="margin-top:14px;">Contribuição para conta conjunta</h3>
+      <div class="row">
+        <input id="jointPedro" type="number" placeholder="% Pedro">
+        <input id="jointBarbara" type="number" placeholder="% Bárbara">
+      </div>
+
+      <button style="margin-top:12px;" onclick="saveJointPlan()">Guardar plano</button>
+
+      <div id="jointSummary" class="helper" style="margin-top:10px;"></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+
+<!-- JS modular -->
+<script src="js/firebase.js"></script>
+<script src="js/calendar.js"></script>
+<script src="js/shopping.js"></script>
+<script src="js/expenses.js"></script>
+<script src="js/vacations.js"></script>
+<script src="js/hours.js"></script>
+<script src="js/joint.js"></script>
+<script src="js/dashboard.js"></script>
+<script src="js/app.js"></script>
+
+</body>
+</html>
+
